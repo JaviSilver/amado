@@ -25,7 +25,7 @@
     "noche": ["Sin asignar"]
   },
   "Sábado": {
-    "mañana": ["Manolo"],
+    "mañana": ["Sin asignar"],
     "tarde": ["Jesús"],
     "noche": ["Sandra"]
   },
@@ -35,3 +35,4 @@
     "noche": ["Lucía"]
   }
 }
+
