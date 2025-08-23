@@ -21,7 +21,7 @@
   },
   "Miércoles": {
     "mañana": ["Sin asignar"],
-    "tarde": ["Sin asignar"],
+    "tarde": ["José y Belen"],
     "noche": ["Pablo"]
   },
   "Jueves": {
@@ -35,4 +35,5 @@
     "noche": ["Sin asignar"]
   }
 }
+
 
