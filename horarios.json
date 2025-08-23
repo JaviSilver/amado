@@ -1,4 +1,14 @@
 {
+  "Sábado": {
+    "mañana": ["Manolo"],
+    "tarde": ["Jesús"],
+    "noche": ["Sandra"]
+  },
+  "Domingo": {
+    "mañana": ["Luisa"],
+    "tarde": ["José Manuel"],
+    "noche": ["Lucía"]
+  },
   "Lunes": {
     "mañana": ["Tere"],
     "tarde": ["Conchi"],
@@ -23,16 +33,5 @@
     "mañana": ["Sin asignar"],
     "tarde": ["Sin asignar"],
     "noche": ["Sin asignar"]
-  },
-  "Sábado": {
-    "mañana": ["Sin asignar"],
-    "tarde": ["Jesús"],
-    "noche": ["Sandra"]
-  },
-  "Domingo": {
-    "mañana": ["Luisa"],
-    "tarde": ["José Manuel"],
-    "noche": ["Lucía"]
   }
 }
-
