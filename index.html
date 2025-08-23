@@ -1,446 +1,77 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turnos de Cuidado - Tío Amado</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        .gradient-bg {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        }
-        .card-shadow {
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-        }
-        .turn-cell {
-            min-height: 70px;
-            transition: all 0.3s ease;
-        }
-        .turn-cell:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-        }
-        .morning { background: linear-gradient(45deg, #FFF3CD, #FFF8E1); }
-        .afternoon { background: linear-gradient(45deg, #E3F2FD, #F0F8FF); }
-        .night { background: linear-gradient(45deg, #F3E5F5, #FAF0E6); }
-        .empty-slot {
-            background: linear-gradient(45deg, #F8F9FA, #E9ECEF);
-            border: 2px dashed #DEE2E6;
-        }
-        .caregiver-badge {
-            display: inline-block;
-            background: rgba(255,255,255,0.9);
-            padding: 3px 6px;
-            margin: 1px;
-            border-radius: 8px;
-            font-size: 0.75rem;
-            font-weight: 500;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-        }
-        .modal {
-            backdrop-filter: blur(5px);
-        }
-        .editor-button {
-            background: rgba(255,255,255,0.1);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.2);
-        }
-        .edit-cell {
-            cursor: pointer;
-            position: relative;
-        }
-        .edit-cell:hover::after {
-            content: '✏️';
-            position: absolute;
-            top: 4px;
-            right: 4px;
-            font-size: 12px;
-        }
-        @media (max-width: 768px) {
-            .turn-cell {
-                min-height: 60px;
-                padding: 8px 4px;
-            }
-            .caregiver-badge {
-                font-size: 0.7rem;
-                padding: 2px 4px;
-            }
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Turnos de cuidado — Amado</title>
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gray-50 min-h-screen">
-    <div class="gradient-bg py-4">
-        <div class="container mx-auto px-4">
-            <h1 class="text-3xl md:text-4xl font-bold text-white text-center mb-2">
-                🏥 Turnos de Cuidado
-            </h1>
-            <p class="text-white text-center text-base md:text-lg opacity-90">
-                Tío Amado - Hospital
-            </p>
-        </div>
+<body class="bg-gray-50 text-gray-800 font-sans p-6">
+  <div class="max-w-5xl mx-auto">
+    <h1 class="text-2xl font-bold mb-6 text-center">Turnos de cuidado — Amado</h1>
+
+    <div id="status" class="text-center text-gray-500 mb-4">Cargando horario...</div>
+
+    <div class="overflow-x-auto shadow-lg rounded-2xl bg-white">
+      <table id="tabla-horarios" class="w-full border-collapse hidden">
+        <thead class="bg-blue-100">
+          <tr>
+            <th class="p-3 text-left">Día</th>
+            <th class="p-3 text-left">Mañana</th>
+            <th class="p-3 text-left">Tarde</th>
+            <th class="p-3 text-left">Noche</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
     </div>
+  </div>
 
-    <div class="container mx-auto px-4 py-6">
-        <!-- Botones de control -->
-        <div class="bg-white rounded-xl card-shadow p-4 mb-6">
-            <div class="flex flex-col md:flex-row items-center justify-between gap-4">
-                <h2 class="text-xl md:text-2xl font-semibold text-gray-800">
-                    📋 Gestión de Horarios
-                </h2>
-                <div class="flex flex-wrap gap-2 justify-center">
-                    <button onclick="toggleEditMode()" id="editButton"
-                            class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 rounded-lg transition duration-200 text-sm">
-                        ✏️ Editar Horarios
-                    </button>
-                    <button onclick="resetToExample()" 
-                            class="bg-green-500 hover:bg-green-600 text-white px-3 py-2 rounded-lg transition duration-200 text-sm">
-                        🔄 Ejemplo
-                    </button>
-                    <button onclick="clearAll()" 
-                            class="bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded-lg transition duration-200 text-sm">
-                        🗑️ Limpiar Todo
-                    </button>
-                </div>
-            </div>
-        </div>
+  <script>
+    async function cargarHorario() {
+      const statusEl = document.getElementById("status");
+      const tabla = document.getElementById("tabla-horarios");
+      const tbody = tabla.querySelector("tbody");
 
-        <!-- Tabla de horarios -->
-        <div class="bg-white rounded-xl card-shadow overflow-hidden">
-            <div class="bg-gradient-to-r from-indigo-500 to-purple-600 px-4 py-3">
-                <h2 class="text-xl md:text-2xl font-semibold text-white">
-                    📅 Horarios de la Semana
-                </h2>
-                <p class="text-indigo-100 text-xs md:text-sm mt-1">
-                    <span id="editHint" class="hidden">👆 Toca cualquier celda para editarla</span>
-                    <span id="viewHint">Organización de turnos por días y franjas horarias</span>
-                </p>
-            </div>
+      try {
+        const resp = await fetch("/horarios.json");
+        if (!resp.ok) throw new Error("No se pudo cargar horarios.json");
+        const data = await resp.json();
 
-            <div class="overflow-x-auto">
-                <table class="w-full">
-                    <thead class="bg-gray-50">
-                        <tr>
-                            <th class="px-3 md:px-6 py-3 text-left text-xs md:text-sm font-semibold text-gray-700 w-20 md:w-32">
-                                Día
-                            </th>
-                            <th class="px-2 md:px-6 py-3 text-center text-xs md:text-sm font-semibold text-gray-700">
-                                🌅 Mañana<br><span class="font-normal text-xs text-gray-500">(8-15h)</span>
-                            </th>
-                            <th class="px-2 md:px-6 py-3 text-center text-xs md:text-sm font-semibold text-gray-700">
-                                ☀️ Tarde<br><span class="font-normal text-xs text-gray-500">(15-22h)</span>
-                            </th>
-                            <th class="px-2 md:px-6 py-3 text-center text-xs md:text-sm font-semibold text-gray-700">
-                                🌙 Noche<br><span class="font-normal text-xs text-gray-500">(22-8h)</span>
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody id="scheduleTable" class="divide-y divide-gray-200">
-                        <!-- Las filas se generarán dinámicamente -->
-                    </tbody>
-                </table>
-            </div>
-        </div>
+        // Limpiar
+        tbody.innerHTML = "";
 
-        <!-- Lista de cuidadores disponibles (colapsible en móvil) -->
-        <div class="mt-6 bg-white rounded-xl card-shadow p-4">
-            <div class="flex items-center justify-between mb-3">
-                <h3 class="text-lg md:text-xl font-semibold text-gray-800">👥 Cuidadores Disponibles</h3>
-                <button onclick="toggleCaregivers()" class="md:hidden text-blue-500">
-                    <span id="toggleIcon">▼</span>
-                </button>
-            </div>
-            <div id="caregiversList" class="block md:block">
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
-                    <div class="bg-blue-50 p-3 rounded-lg">
-                        <h4 class="font-semibold text-blue-800 mb-2 text-sm">Parejas</h4>
-                        <div class="space-y-1 text-xs md:text-sm text-blue-700">
-                            <div>• Jesús y MariCarmen</div>
-                            <div>• Lucía y Miguel</div>
-                            <div>• José y Belén</div>
-                        </div>
-                    </div>
-                    <div class="bg-green-50 p-3 rounded-lg">
-                        <h4 class="font-semibold text-green-800 mb-2 text-sm">Individuales (1)</h4>
-                        <div class="space-y-1 text-xs md:text-sm text-green-700">
-                            <div>• Conchi • Ángel</div>
-                            <div>• Tere • Javi</div>
-                        </div>
-                    </div>
-                    <div class="bg-purple-50 p-3 rounded-lg">
-                        <h4 class="font-semibold text-purple-800 mb-2 text-sm">Individuales (2)</h4>
-                        <div class="space-y-1 text-xs md:text-sm text-purple-700">
-                            <div>• Pablo • Alejandro</div>
-                            <div>• Sandra • Manolo</div>
-                            <div>• Luisa • José Manuel</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+        // Iterar días
+        Object.keys(data).forEach(dia => {
+          const fila = document.createElement("tr");
+          fila.className = "border-b hover:bg-blue-50";
 
-    <!-- Modal de edición -->
-    <div id="editModal" class="hidden fixed inset-0 bg-black bg-opacity-50 modal z-50 flex items-center justify-center p-4">
-        <div class="bg-white rounded-xl max-w-md w-full max-h-96 overflow-y-auto">
-            <div class="p-4 border-b">
-                <h3 id="modalTitle" class="text-lg font-semibold text-gray-800">Editar Turno</h3>
-                <p class="text-sm text-gray-600">Escribe los nombres separados por comas</p>
-            </div>
-            <div class="p-4">
-                <textarea id="editTextarea" 
-                         class="w-full h-32 p-3 border border-gray-300 rounded-lg resize-none text-sm"
-                         placeholder="Ejemplo: Conchi, Ángel&#10;O: Jesús y MariCarmen"></textarea>
-                <div class="mt-3 text-xs text-gray-500">
-                    💡 <strong>Ejemplos:</strong><br>
-                    • Para varios: "Conchi, Ángel"<br>
-                    • Para pareja: "Jesús y MariCarmen"<br>
-                    • Para vacío: deja en blanco
-                </div>
-            </div>
-            <div class="p-4 border-t flex gap-2 justify-end">
-                <button onclick="closeModal()" 
-                        class="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg text-sm">
-                    Cancelar
-                </button>
-                <button onclick="saveEdit()" 
-                        class="px-4 py-2 bg-blue-500 text-white rounded-lg text-sm">
-                    Guardar
-                </button>
-            </div>
-        </div>
-    </div>
+          // Día
+          const celDia = document.createElement("td");
+          celDia.className = "p-3 font-medium text-gray-700";
+          celDia.textContent = dia;
+          fila.appendChild(celDia);
 
-    <script>
-        const days = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
-        const shifts = ['mañana', 'tarde', 'noche'];
-        
-        let schedule = {};
-        let isEditMode = false;
-        let currentEdit = null;
+          // Mañana, tarde, noche
+          ["mañana", "tarde", "noche"].forEach(turno => {
+            const cel = document.createElement("td");
+            cel.className = "p-3";
+            cel.textContent = data[dia][turno].join(", ");
+            fila.appendChild(cel);
+          });
 
-        // Datos de ejemplo
-        const exampleSchedule = {
-            "Lunes": {
-                "mañana": ["Jesús y MariCarmen"],
-                "tarde": ["Conchi"],
-                "noche": ["Ángel"]
-            },
-            "Martes": {
-                "mañana": ["Lucía y Miguel"],
-                "tarde": ["Tere"],
-                "noche": ["Pablo"]
-            },
-            "Miércoles": {
-                "mañana": ["José y Belén"],
-                "tarde": ["Javi"],
-                "noche": ["Alejandro"]
-            },
-            "Jueves": {
-                "mañana": ["Jesús y MariCarmen"],
-                "tarde": ["Sandra"],
-                "noche": ["Manolo"]
-            },
-            "Viernes": {
-                "mañana": ["Lucía y Miguel"],
-                "tarde": ["Luisa"],
-                "noche": ["José Manuel"]
-            },
-            "Sábado": {
-                "mañana": ["José y Belén"],
-                "tarde": ["Conchi"],
-                "noche": ["Ángel"]
-            },
-            "Domingo": {
-                "mañana": ["Tere"],
-                "tarde": ["Pablo", "Javi"],
-                "noche": ["Alejandro"]
-            }
-        };
-
-        // Inicializar horarios vacíos
-        function initializeSchedule() {
-            schedule = {};
-            days.forEach(day => {
-                schedule[day] = {
-                    mañana: [],
-                    tarde: [],
-                    noche: []
-                };
-            });
-        }
-
-        // Generar tabla de horarios
-        function generateScheduleTable() {
-            const tableBody = document.getElementById('scheduleTable');
-            tableBody.innerHTML = '';
-
-            days.forEach(day => {
-                const row = document.createElement('tr');
-                row.className = 'hover:bg-gray-50 transition duration-200';
-                
-                // Columna del día
-                const dayCell = document.createElement('td');
-                dayCell.className = 'px-3 md:px-6 py-3 font-semibold text-gray-800 bg-gray-50 text-xs md:text-sm';
-                dayCell.textContent = day;
-                row.appendChild(dayCell);
-
-                // Columnas de turnos
-                shifts.forEach(shift => {
-                    const cell = document.createElement('td');
-                    cell.className = `px-2 md:px-4 py-3 text-center turn-cell ${shift}`;
-                    
-                    if (isEditMode) {
-                        cell.className += ' edit-cell';
-                        cell.onclick = () => openEditModal(day, shift);
-                    }
-                    
-                    const caregivers = schedule[day][shift];
-                    if (caregivers && caregivers.length > 0) {
-                        caregivers.forEach(caregiver => {
-                            const badge = document.createElement('span');
-                            badge.className = 'caregiver-badge';
-                            badge.textContent = caregiver;
-                            cell.appendChild(badge);
-                        });
-                    } else {
-                        cell.className += ' empty-slot';
-                        cell.innerHTML = '<span class="text-gray-400 text-xs">Sin asignar</span>';
-                    }
-                    
-                    row.appendChild(cell);
-                });
-
-                tableBody.appendChild(row);
-            });
-        }
-
-        // Alternar modo edición
-        function toggleEditMode() {
-            isEditMode = !isEditMode;
-            const button = document.getElementById('editButton');
-            const editHint = document.getElementById('editHint');
-            const viewHint = document.getElementById('viewHint');
-            
-            if (isEditMode) {
-                button.textContent = '👁️ Ver Horarios';
-                button.className = 'bg-orange-500 hover:bg-orange-600 text-white px-3 py-2 rounded-lg transition duration-200 text-sm';
-                editHint.classList.remove('hidden');
-                viewHint.classList.add('hidden');
-            } else {
-                button.textContent = '✏️ Editar Horarios';
-                button.className = 'bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 rounded-lg transition duration-200 text-sm';
-                editHint.classList.add('hidden');
-                viewHint.classList.remove('hidden');
-            }
-            
-            generateScheduleTable();
-        }
-
-        // Abrir modal de edición
-        function openEditModal(day, shift) {
-            if (!isEditMode) return;
-            
-            currentEdit = { day, shift };
-            const modal = document.getElementById('editModal');
-            const title = document.getElementById('modalTitle');
-            const textarea = document.getElementById('editTextarea');
-            
-            title.textContent = `${day} - ${shift.charAt(0).toUpperCase() + shift.slice(1)}`;
-            textarea.value = schedule[day][shift].join(', ');
-            modal.classList.remove('hidden');
-            textarea.focus();
-        }
-
-        // Cerrar modal
-        function closeModal() {
-            document.getElementById('editModal').classList.add('hidden');
-            currentEdit = null;
-        }
-
-        // Guardar edición
-        function saveEdit() {
-            if (!currentEdit) return;
-            
-            const textarea = document.getElementById('editTextarea');
-            const value = textarea.value.trim();
-            
-            if (value === '') {
-                schedule[currentEdit.day][currentEdit.shift] = [];
-            } else {
-                schedule[currentEdit.day][currentEdit.shift] = value
-                    .split(',')
-                    .map(name => name.trim())
-                    .filter(name => name.length > 0);
-            }
-            
-            generateScheduleTable();
-            closeModal();
-        }
-
-        // Resetear a ejemplo
-        function resetToExample() {
-            if (confirm('¿Cargar los horarios de ejemplo?')) {
-                schedule = JSON.parse(JSON.stringify(exampleSchedule));
-                generateScheduleTable();
-            }
-        }
-
-        // Limpiar todo
-        function clearAll() {
-            if (confirm('¿Eliminar todos los horarios?')) {
-                initializeSchedule();
-                generateScheduleTable();
-            }
-        }
-
-        // Toggle lista de cuidadores en móvil
-        function toggleCaregivers() {
-            const list = document.getElementById('caregiversList');
-            const icon = document.getElementById('toggleIcon');
-            
-            if (list.style.display === 'none') {
-                list.style.display = 'block';
-                icon.textContent = '▼';
-            } else {
-                list.style.display = 'none';
-                icon.textContent = '▶';
-            }
-        }
-
-        // Manejar Enter en textarea
-        document.getElementById('editTextarea').addEventListener('keydown', (e) => {
-            if (e.key === 'Enter' && !e.shiftKey) {
-                e.preventDefault();
-                saveEdit();
-            }
+          tbody.appendChild(fila);
         });
 
-        // Cerrar modal al hacer clic fuera
-        document.getElementById('editModal').addEventListener('click', (e) => {
-            if (e.target.id === 'editModal') {
-                closeModal();
-            }
-        });
+        statusEl.classList.add("hidden");
+        tabla.classList.remove("hidden");
+      } catch (error) {
+        statusEl.textContent = "❌ Error al cargar el horario: " + error.message;
+        statusEl.className = "text-center text-red-600 font-semibold";
+      }
+    }
 
-        // Inicializar la aplicación
-        document.addEventListener('DOMContentLoaded', () => {
-            // Cargar ejemplo por defecto
-            schedule = JSON.parse(JSON.stringify(exampleSchedule));
-            generateScheduleTable();
-            
-            // Ocultar lista de cuidadores en móvil por defecto
-            if (window.innerWidth < 768) {
-                document.getElementById('caregiversList').style.display = 'none';
-                document.getElementById('toggleIcon').textContent = '▶';
-            }
-        });
-
-        // Ajustar interfaz al cambiar tamaño de pantalla
-        window.addEventListener('resize', () => {
-            if (window.innerWidth >= 768) {
-                document.getElementById('caregiversList').style.display = 'block';
-            }
-        });
-    </script>
+    cargarHorario();
+  </script>
 </body>
 </html>
