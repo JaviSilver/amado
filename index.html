@@ -6,30 +6,45 @@
   <title>Turnos de cuidado — Amado</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gray-50 text-gray-800 font-sans p-6">
-  <div class="max-w-5xl mx-auto">
-    <h1 class="text-2xl font-bold mb-6 text-center">Turnos de cuidado — Amado</h1>
+<body class="bg-gray-50 text-gray-800 font-sans">
+  <div class="min-h-screen">
+    <!-- Header -->
+    <div class="bg-blue-600 text-white p-4 sticky top-0 z-10 shadow-md">
+      <h1 class="text-xl font-bold text-center">Turnos de cuidado — Amado</h1>
+    </div>
 
-    <div id="status" class="text-center text-gray-500 mb-4">Cargando horario...</div>
+    <!-- Status -->
+    <div id="status" class="text-center text-gray-500 p-4 text-lg">Cargando horario...</div>
 
-    <div class="overflow-x-auto shadow-lg rounded-2xl bg-white">
-      <table id="tabla-horarios" class="w-full border-collapse hidden">
-        <thead class="bg-blue-100">
-          <tr>
-            <th class="p-3 text-left">Día</th>
-            <th class="p-3 text-left">Mañana</th>
-            <th class="p-3 text-left">Tarde</th>
-            <th class="p-3 text-left">Noche</th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
+    <!-- Contenido principal -->
+    <div class="p-4">
+      <!-- Vista escritorio (tabla tradicional) -->
+      <div id="tabla-escritorio" class="hidden lg:block">
+        <div class="overflow-x-auto shadow-lg rounded-2xl bg-white">
+          <table id="tabla-horarios" class="w-full border-collapse">
+            <thead class="bg-blue-100">
+              <tr>
+                <th class="p-4 text-left text-sm font-semibold">Día</th>
+                <th class="p-4 text-left text-sm font-semibold">Mañana</th>
+                <th class="p-4 text-left text-sm font-semibold">Tarde</th>
+                <th class="p-4 text-left text-sm font-semibold">Noche</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Vista móvil (tarjetas) -->
+      <div id="vista-movil" class="lg:hidden space-y-4"></div>
     </div>
   </div>
 
   <script>
     async function cargarHorario() {
       const statusEl = document.getElementById("status");
+      const tablaEscritorio = document.getElementById("tabla-escritorio");
+      const vistMovil = document.getElementById("vista-movil");
       const tabla = document.getElementById("tabla-horarios");
       const tbody = tabla.querySelector("tbody");
 
@@ -40,22 +55,23 @@
 
         // Limpiar
         tbody.innerHTML = "";
+        vistMovil.innerHTML = "";
 
-        // Iterar días
+        // Generar vista de escritorio (tabla tradicional)
         Object.keys(data).forEach(dia => {
           const fila = document.createElement("tr");
           fila.className = "border-b hover:bg-blue-50";
 
           // Día
           const celDia = document.createElement("td");
-          celDia.className = "p-3 font-medium text-gray-700";
+          celDia.className = "p-4 font-medium text-gray-700";
           celDia.textContent = dia;
           fila.appendChild(celDia);
 
           // Mañana, tarde, noche
           ["mañana", "tarde", "noche"].forEach(turno => {
             const cel = document.createElement("td");
-            cel.className = "p-3";
+            cel.className = "p-4 text-sm";
             cel.textContent = data[dia][turno].join(", ");
             fila.appendChild(cel);
           });
@@ -63,11 +79,66 @@
           tbody.appendChild(fila);
         });
 
+        // Generar vista móvil (tarjetas)
+        Object.keys(data).forEach(dia => {
+          const tarjeta = document.createElement("div");
+          tarjeta.className = "bg-white rounded-xl shadow-md overflow-hidden border border-gray-200";
+
+          // Header de la tarjeta con el día
+          const header = document.createElement("div");
+          header.className = "bg-blue-600 text-white p-4";
+          header.innerHTML = `<h2 class="text-lg font-bold text-center">${dia}</h2>`;
+          tarjeta.appendChild(header);
+
+          // Contenido de la tarjeta
+          const contenido = document.createElement("div");
+          contenido.className = "p-4 space-y-4";
+
+          ["mañana", "tarde", "noche"].forEach(turno => {
+            const personas = data[dia][turno];
+            const turnoDiv = document.createElement("div");
+            
+            // Color de fondo según el turno
+            let colorFondo = "";
+            let iconoTurno = "";
+            if (turno === "mañana") {
+              colorFondo = "bg-yellow-50 border-yellow-200";
+              iconoTurno = "🌅";
+            } else if (turno === "tarde") {
+              colorFondo = "bg-orange-50 border-orange-200";
+              iconoTurno = "☀️";
+            } else {
+              colorFondo = "bg-blue-50 border-blue-200";
+              iconoTurno = "🌙";
+            }
+
+            turnoDiv.className = `p-3 rounded-lg border-2 ${colorFondo}`;
+            
+            const turnoCapitalizado = turno.charAt(0).toUpperCase() + turno.slice(1);
+            turnoDiv.innerHTML = `
+              <div class="flex items-center mb-2">
+                <span class="text-xl mr-2">${iconoTurno}</span>
+                <h3 class="font-semibold text-gray-800 text-base">${turnoCapitalizado}</h3>
+              </div>
+              <div class="text-sm text-gray-700 leading-relaxed">
+                ${personas.length > 0 ? personas.join(", ") : "Sin asignar"}
+              </div>
+            `;
+            
+            contenido.appendChild(turnoDiv);
+          });
+
+          tarjeta.appendChild(contenido);
+          vistMovil.appendChild(tarjeta);
+        });
+
         statusEl.classList.add("hidden");
-        tabla.classList.remove("hidden");
+        tablaEscritorio.classList.remove("hidden");
+        vistMovil.classList.remove("hidden");
+        
       } catch (error) {
-        statusEl.textContent = "❌ Error al cargar el horario: " + error.message;
-        statusEl.className = "text-center text-red-600 font-semibold";
+        statusEl.textContent = "⚠ Error al cargar el horario: " + error.message;
+        statusEl.className = "text-center text-red-600 font-semibold p-4 text-lg";
       }
     }
 
