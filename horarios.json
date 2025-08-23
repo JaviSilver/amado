@@ -1,37 +1,25 @@
 {
-  "Lunes": {
-    "mañana": ["Jesús y Benito Camela"],
-    "tarde": ["Conchi"],
-    "noche": ["Ángel"]
-  },
-  "Martes": {
-    "mañana": ["Lucía y Miguel"],
-    "tarde": ["Tere"],
-    "noche": ["Pablo"]
-  },
-  "Miércoles": {
-    "mañana": ["José y Belén"],
-    "tarde": ["Javi"],
-    "noche": ["Alejandro"]
-  },
-  "Jueves": {
-    "mañana": ["Jesús y MariCarmen"],
-    "tarde": ["Sandra"],
-    "noche": ["Manolo"]
-  },
-  "Viernes": {
-    "mañana": ["Lucía y Miguel"],
-    "tarde": ["Luisa"],
-    "noche": ["José Manuel"]
-  },
   "Sábado": {
-    "mañana": ["José y Belén"],
-    "tarde": ["Conchi"],
-    "noche": ["Ángel"]
+    "mañana": ["Manolo"],
+    "tarde": ["Jesús"],
+    "noche": ["Sandra"]
   },
   "Domingo": {
+    "mañana": ["Luisa"],
+    "tarde": ["José Manuel"],
+    "noche": ["Lucía"]
+  },
+  "Lunes": {
     "mañana": ["Tere"],
-    "tarde": ["Pablo", "Javi"],
-    "noche": ["Alejandro"]
+    "tarde": ["Conchi"],
+    "noche": ["Miguel"]
+  },
+  "Martes": {
+    "mañana": ["Ángel"],
+    "tarde": ["MariCarmen y Jesús"],
+    "noche": ["Javier"]
+  },
+  "Miércoles": {
+    "noche": ["Pablo"]
   }
 }
