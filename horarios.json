@@ -1,9 +1,4 @@
 {
-  "Sábado": {
-    "mañana": ["Manolo"],
-    "tarde": ["Jesús"],
-    "noche": ["Sandra"]
-  },
   "Domingo": {
     "mañana": ["Luisa"],
     "tarde": ["José Manuel"],
@@ -33,8 +28,14 @@
     "mañana": ["Sin asignar"],
     "tarde": ["Sin asignar"],
     "noche": ["Sin asignar"]
+  },
+  "Sábado": {
+    "mañana": ["Manolo"],
+    "tarde": ["Jesús"],
+    "noche": ["Sandra"]
   }
 }
+
 
 
 
