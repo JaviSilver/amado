@@ -20,7 +20,7 @@
     "noche": ["Pablo"]
   },
   "Jueves": {
-    "mañana": ["Sin asignar"],
+    "mañana": ["Angel"],
     "tarde": ["Conchi"],
     "noche": ["Sandra"]
   },
@@ -35,6 +35,7 @@
     "noche": ["Sin asignar"]
   }
 }
+
 
 
 
