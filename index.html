@@ -5,123 +5,228 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Turnos de cuidado — Amado</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+    
+    .fade-in {
+      animation: fadeIn 0.6s ease-out forwards;
+    }
+    
+    .loading-pulse {
+      animation: pulse 2s infinite;
+    }
+    
+    .card-hover {
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .card-hover:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    }
+    
+    .table-row-hover {
+      transition: background-color 0.2s ease;
+    }
+    
+    .gradient-bg {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+  </style>
 </head>
-<body class="bg-gray-50 text-gray-800 font-sans">
-  <div class="min-h-screen">
-    <!-- Header -->
-    <div class="bg-blue-600 text-white p-4 sticky top-0 z-10 shadow-md">
-      <h1 class="text-xl font-bold text-center">Turnos de cuidado — Amado</h1>
+<body class="bg-gradient-to-br from-gray-50 to-gray-100 text-gray-800 font-sans min-h-screen">
+  <!-- Header con gradiente -->
+  <div class="gradient-bg text-white p-6 sticky top-0 z-10 shadow-lg">
+    <div class="max-w-6xl mx-auto">
+      <h1 class="text-2xl md:text-3xl font-bold text-center tracking-wide">
+        💙 Turnos de cuidado — Amado
+      </h1>
+      <p class="text-center text-blue-100 mt-2 text-sm md:text-base">
+        Organización hospitalaria familiar
+      </p>
     </div>
+  </div>
 
-    <!-- Status -->
-    <div id="status" class="text-center text-gray-500 p-4 text-lg">Cargando horario...</div>
+  <!-- Status de carga -->
+  <div id="status" class="text-center text-gray-600 p-8 text-lg loading-pulse">
+    <div class="inline-block">
+      <div class="w-8 h-8 border-4 border-blue-400 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+      Cargando horario...
+    </div>
+  </div>
 
-    <!-- Contenido principal -->
-    <div class="p-4">
-      <!-- Vista escritorio (tabla tradicional) -->
-      <div id="tabla-escritorio" class="hidden lg:block">
-        <div class="overflow-x-auto shadow-lg rounded-2xl bg-white">
-          <table id="tabla-horarios" class="w-full border-collapse">
-            <thead class="bg-blue-100">
+  <!-- Contenido principal -->
+  <div class="max-w-6xl mx-auto p-4 md:p-6 lg:p-8">
+    <!-- Vista escritorio (tabla mejorada) -->
+    <div id="tabla-escritorio" class="hidden lg:block opacity-0">
+      <div class="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-200">
+        <div class="bg-gradient-to-r from-blue-50 to-indigo-50 p-6 border-b border-gray-200">
+          <h2 class="text-xl font-semibold text-gray-800 text-center">
+            📅 Planificación Semanal
+          </h2>
+        </div>
+        <div class="overflow-x-auto">
+          <table id="tabla-horarios" class="w-full">
+            <thead class="bg-gradient-to-r from-blue-100 to-indigo-100">
               <tr>
-                <th class="p-4 text-left text-sm font-semibold">Día</th>
-                <th class="p-4 text-left text-sm font-semibold">Mañana</th>
-                <th class="p-4 text-left text-sm font-semibold">Tarde</th>
-                <th class="p-4 text-left text-sm font-semibold">Noche</th>
+                <th class="p-4 text-left text-sm font-bold text-gray-700 w-32">Día</th>
+                <th class="p-4 text-left text-sm font-bold text-gray-700">
+                  <span class="flex items-center">
+                    <span class="text-lg mr-2">🌅</span>
+                    Mañana
+                  </span>
+                </th>
+                <th class="p-4 text-left text-sm font-bold text-gray-700">
+                  <span class="flex items-center">
+                    <span class="text-lg mr-2">☀️</span>
+                    Tarde
+                  </span>
+                </th>
+                <th class="p-4 text-left text-sm font-bold text-gray-700">
+                  <span class="flex items-center">
+                    <span class="text-lg mr-2">🌙</span>
+                    Noche
+                  </span>
+                </th>
               </tr>
             </thead>
             <tbody></tbody>
           </table>
         </div>
       </div>
-
-      <!-- Vista móvil (tarjetas) -->
-      <div id="vista-movil" class="lg:hidden space-y-4"></div>
     </div>
+
+    <!-- Vista móvil (tarjetas mejoradas) -->
+    <div id="vista-movil" class="lg:hidden space-y-6 opacity-0"></div>
   </div>
+
+  <!-- Footer discreto -->
+  <footer class="mt-12 bg-white border-t border-gray-200 py-6">
+    <div class="max-w-6xl mx-auto px-4 text-center">
+      <p class="text-gray-500 text-sm">
+        <span class="inline-block mr-4">
+          ❤️ Con amor para la familia
+        </span>
+        <span id="ultima-actualizacion" class="text-gray-400">
+          Última actualización: Cargando...
+        </span>
+      </p>
+    </div>
+  </footer>
 
   <script>
     async function cargarHorario() {
       const statusEl = document.getElementById("status");
       const tablaEscritorio = document.getElementById("tabla-escritorio");
-      const vistMovil = document.getElementById("vista-movil");
+      const vistaMovil = document.getElementById("vista-movil");
       const tabla = document.getElementById("tabla-horarios");
       const tbody = tabla.querySelector("tbody");
+      const ultimaActualizacion = document.getElementById("ultima-actualizacion");
 
       try {
-        const resp = await fetch("/horarios.json");
-        if (!resp.ok) throw new Error("No se pudo cargar horarios.json");
-        const data = await resp.json();
+        // Cargar el archivo horarios.json
+        const response = await fetch('horarios.json');
+        if (!response.ok) {
+          throw new Error(`Error HTTP: ${response.status} - No se pudo cargar horarios.json`);
+        }
+        const data = await response.json();
 
-        // Limpiar
+        // Limpiar contenido
         tbody.innerHTML = "";
-        vistMovil.innerHTML = "";
+        vistaMovil.innerHTML = "";
 
-        // Generar vista de escritorio (tabla tradicional)
-        Object.keys(data).forEach(dia => {
+        // Generar vista de escritorio mejorada
+        Object.keys(data).forEach((dia, index) => {
           const fila = document.createElement("tr");
-          fila.className = "border-b hover:bg-blue-50";
+          fila.className = "border-b border-gray-100 table-row-hover hover:bg-gradient-to-r hover:from-blue-50 hover:to-indigo-50";
+          fila.style.animationDelay = `${index * 0.1}s`;
 
-          // Día
+          // Día de la semana
           const celDia = document.createElement("td");
-          celDia.className = "p-4 font-medium text-gray-700";
+          celDia.className = "p-4 font-bold text-gray-800 bg-gray-50";
           celDia.textContent = dia;
           fila.appendChild(celDia);
 
-          // Mañana, tarde, noche
-          ["mañana", "tarde", "noche"].forEach(turno => {
+          // Turnos con colores diferenciados
+          const turnos = ["mañana", "tarde", "noche"];
+          const coloresTurnos = [
+            "bg-yellow-50 border-l-4 border-yellow-300",
+            "bg-orange-50 border-l-4 border-orange-300", 
+            "bg-blue-50 border-l-4 border-blue-300"
+          ];
+
+          turnos.forEach((turno, turnoIndex) => {
             const cel = document.createElement("td");
-            cel.className = "p-4 text-sm";
-            cel.textContent = data[dia][turno].join(", ");
+            cel.className = `p-4 ${coloresTurnos[turnoIndex]}`;
+            
+            const personas = data[dia][turno];
+            const sinAsignar = personas.includes("Sin asignar");
+            
+            cel.innerHTML = `
+              <div class="text-sm ${sinAsignar ? 'text-gray-400 italic' : 'text-gray-700 font-medium'}">
+                ${sinAsignar ? '⚠️ Sin asignar' : personas.join(", ")}
+              </div>
+            `;
             fila.appendChild(cel);
           });
 
           tbody.appendChild(fila);
         });
 
-        // Generar vista móvil (tarjetas)
-        Object.keys(data).forEach(dia => {
+        // Generar vista móvil con tarjetas mejoradas
+        Object.keys(data).forEach((dia, index) => {
           const tarjeta = document.createElement("div");
-          tarjeta.className = "bg-white rounded-xl shadow-md overflow-hidden border border-gray-200";
+          tarjeta.className = "bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-200 card-hover fade-in";
+          tarjeta.style.animationDelay = `${index * 0.15}s`;
 
-          // Header de la tarjeta con el día
+          // Header de la tarjeta con gradiente
           const header = document.createElement("div");
-          header.className = "bg-blue-600 text-white p-4";
-          header.innerHTML = `<h2 class="text-lg font-bold text-center">${dia}</h2>`;
+          header.className = "gradient-bg text-white p-5";
+          header.innerHTML = `
+            <h2 class="text-xl font-bold text-center tracking-wide">
+              📅 ${dia}
+            </h2>
+          `;
           tarjeta.appendChild(header);
 
           // Contenido de la tarjeta
           const contenido = document.createElement("div");
-          contenido.className = "p-4 space-y-4";
+          contenido.className = "p-5 space-y-4";
 
-          ["mañana", "tarde", "noche"].forEach(turno => {
+          const turnos = ["mañana", "tarde", "noche"];
+          const iconosTurnos = ["🌅", "☀️", "🌙"];
+          const coloresTurnos = [
+            "bg-gradient-to-r from-yellow-50 to-amber-50 border-yellow-200",
+            "bg-gradient-to-r from-orange-50 to-red-50 border-orange-200",
+            "bg-gradient-to-r from-blue-50 to-indigo-50 border-blue-200"
+          ];
+
+          turnos.forEach((turno, turnoIndex) => {
             const personas = data[dia][turno];
             const turnoDiv = document.createElement("div");
+            const sinAsignar = personas.includes("Sin asignar");
             
-            // Color de fondo según el turno
-            let colorFondo = "";
-            let iconoTurno = "";
-            if (turno === "mañana") {
-              colorFondo = "bg-yellow-50 border-yellow-200";
-              iconoTurno = "🌅";
-            } else if (turno === "tarde") {
-              colorFondo = "bg-orange-50 border-orange-200";
-              iconoTurno = "☀️";
-            } else {
-              colorFondo = "bg-blue-50 border-blue-200";
-              iconoTurno = "🌙";
-            }
-
-            turnoDiv.className = `p-3 rounded-lg border-2 ${colorFondo}`;
+            turnoDiv.className = `p-4 rounded-xl border-2 ${coloresTurnos[turnoIndex]} transition-all duration-300 hover:scale-105`;
             
             const turnoCapitalizado = turno.charAt(0).toUpperCase() + turno.slice(1);
             turnoDiv.innerHTML = `
-              <div class="flex items-center mb-2">
-                <span class="text-xl mr-2">${iconoTurno}</span>
-                <h3 class="font-semibold text-gray-800 text-base">${turnoCapitalizado}</h3>
+              <div class="flex items-center justify-between mb-3">
+                <div class="flex items-center">
+                  <span class="text-2xl mr-3">${iconosTurnos[turnoIndex]}</span>
+                  <h3 class="font-bold text-gray-800 text-lg">${turnoCapitalizado}</h3>
+                </div>
+                ${sinAsignar ? '<span class="text-yellow-600 text-xs font-semibold bg-yellow-100 px-2 py-1 rounded-full">Pendiente</span>' : '<span class="text-green-600 text-xs font-semibold bg-green-100 px-2 py-1 rounded-full">Asignado</span>'}
               </div>
-              <div class="text-sm text-gray-700 leading-relaxed">
-                ${personas.length > 0 ? personas.join(", ") : "Sin asignar"}
+              <div class="text-base ${sinAsignar ? 'text-gray-500 italic' : 'text-gray-700 font-medium'} leading-relaxed">
+                ${sinAsignar ? '⚠️ Turno sin asignar' : personas.join(", ")}
               </div>
             `;
             
@@ -129,19 +234,40 @@
           });
 
           tarjeta.appendChild(contenido);
-          vistMovil.appendChild(tarjeta);
+          vistaMovil.appendChild(tarjeta);
         });
 
-        statusEl.classList.add("hidden");
-        tablaEscritorio.classList.remove("hidden");
-        vistMovil.classList.remove("hidden");
+        // Mostrar contenido con animaciones
+        statusEl.style.display = "none";
+        
+        setTimeout(() => {
+          tablaEscritorio.style.opacity = "1";
+          tablaEscritorio.classList.add("fade-in");
+          vistaMovil.style.opacity = "1";
+          vistaMovil.classList.add("fade-in");
+        }, 300);
+
+        // Actualizar footer
+        const ahora = new Date();
+        ultimaActualizacion.textContent = `Última actualización: ${ahora.toLocaleDateString('es-ES')} a las ${ahora.toLocaleTimeString('es-ES', {hour: '2-digit', minute:'2-digit'})}`;
         
       } catch (error) {
-        statusEl.textContent = "⚠ Error al cargar el horario: " + error.message;
-        statusEl.className = "text-center text-red-600 font-semibold p-4 text-lg";
+        statusEl.innerHTML = `
+          <div class="bg-red-50 border border-red-200 rounded-xl p-6 max-w-md mx-auto">
+            <div class="flex items-center text-red-600 mb-2">
+              <span class="text-2xl mr-3">⚠️</span>
+              <h3 class="font-bold text-lg">Error al cargar</h3>
+            </div>
+            <p class="text-red-700 text-sm">${error.message}</p>
+            <button onclick="cargarHorario()" class="mt-4 bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-colors duration-200">
+              Reintentar
+            </button>
+          </div>
+        `;
       }
     }
 
+    // Cargar al inicializar la página
     cargarHorario();
   </script>
 </body>
