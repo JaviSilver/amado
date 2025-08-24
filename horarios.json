@@ -30,11 +30,12 @@
     "noche": ["Sin asignar"]
   },
   "Sábado": {
-    "mañana": ["Manolo"],
-    "tarde": ["Jesús"],
-    "noche": ["Sandra"]
+    "mañana": ["Sin asignar"],
+    "tarde": ["Sin asignar"],
+    "noche": ["Sin asignar"]
   }
 }
+
 
 
 
