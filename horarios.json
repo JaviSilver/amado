@@ -1,6 +1,6 @@
 {
   "Lunes": {
-    "mañana": ["Tere"],
+    "mañana": ["Sin asignar"],
     "tarde": ["Conchi"],
     "noche": ["Miguel"]
   },
@@ -35,6 +35,7 @@
     "noche": ["Sin asignar"]
   }
 }
+
 
 
 
