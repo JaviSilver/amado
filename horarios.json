@@ -1,9 +1,4 @@
 {
-  "Lunes": {
-    "mañana": ["Sin asignar"],
-    "tarde": ["Conchi"],
-    "noche": ["Miguel"]
-  },
   "Martes": {
     "mañana": ["Ángel"],
     "tarde": ["MariCarmen y Jesús"],
@@ -33,8 +28,14 @@
     "mañana": ["Sin asignar"],
     "tarde": ["Sin asignar"],
     "noche": ["Sin asignar"]
+  },
+  "Lunes": {
+    "mañana": ["Sin asignar"],
+    "tarde": ["Sin asignar"],
+    "noche": ["Sin asignar"]
   }
 }
+
 
 
 
