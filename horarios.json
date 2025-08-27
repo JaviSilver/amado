@@ -5,12 +5,12 @@
     "noche": ["Pablo"]
   },
   "Jueves": {
-    "mañana": ["Angel"],
+    "mañana": ["Mari Tere"],
     "tarde": ["Conchi"],
     "noche": ["Sandra"]
   },
   "Viernes": {
-    "mañana": ["Mari Tere"],
+    "mañana": ["Angel"],
     "tarde": ["Sin asignar"],
     "noche": ["Sin asignar"]
   },
@@ -35,6 +35,7 @@
     "noche": ["Sin asignar"]
   }
 }
+
 
 
 
