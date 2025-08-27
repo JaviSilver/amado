@@ -15,7 +15,7 @@
     "noche": ["Sin asignar"]
   },
   "Sábado": {
-    "mañana": ["Sin asignar"],
+    "mañana": ["Conchi"],
     "tarde": ["Jesús Moro"],
     "noche": ["Sin asignar"]
   },
@@ -35,6 +35,7 @@
     "noche": ["Sin asignar"]
   }
 }
+
 
 
 
