@@ -5,7 +5,7 @@
     "noche": ["Pablo"]
   },
   "Jueves": {
-    "mañana": ["Mari Tere"],
+    "mañana": ["Tere"],
     "tarde": ["Conchi"],
     "noche": ["Sandra"]
   },
@@ -35,6 +35,7 @@
     "noche": ["Sin asignar"]
   }
 }
+
 
 
 
