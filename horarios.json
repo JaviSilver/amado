@@ -21,7 +21,7 @@
   },
   "Domingo": {
     "mañana": ["La Chica (Margarita)"],
-    "tarde": ["Sin asignar"],
+    "tarde": ["La Chica (Margarita)"],
     "noche": ["Sin asignar"]
   },
   "Lunes": {
@@ -35,6 +35,7 @@
     "noche": ["Sin asignar"]
   }
 }
+
 
 
 
