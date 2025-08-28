@@ -7,17 +7,17 @@
   "Viernes": {
     "mañana": ["Angel"],
     "tarde": ["Alejandro"],
-    "noche": ["Sin asignar"]
+    "noche": ["Lucia (Ciudadora)"]
   },
   "Sábado": {
     "mañana": ["Conchi"],
     "tarde": ["Jesús Moro"],
-    "noche": ["Sin asignar"]
+    "noche": ["Lucia (Ciudadora)"]
   },
   "Domingo": {
     "mañana": ["La Chica (Margarita)"],
     "tarde": ["La Chica (Margarita)"],
-    "noche": ["Sin asignar"]
+    "noche": ["Lucia (Ciudadora)"]
   },
   "Lunes": {
     "mañana": ["Sin asignar"],
@@ -35,6 +35,7 @@
     "noche": ["Sin asignar"]
   }
 }
+
 
 
 
