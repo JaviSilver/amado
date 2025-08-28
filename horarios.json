@@ -1,9 +1,4 @@
 {
-  "Miércoles": {
-    "mañana": ["Mari Tere"],
-    "tarde": ["José y Belen"],
-    "noche": ["Pablo"]
-  },
   "Jueves": {
     "mañana": ["Tere"],
     "tarde": ["Conchi"],
@@ -33,8 +28,14 @@
     "mañana": ["Sin asignar"],
     "tarde": ["Sin asignar"],
     "noche": ["Sin asignar"]
+  },
+  "Miércoles": {
+    "mañana": ["Sin asignar"],
+    "tarde": ["Sin asignar"],
+    "noche": ["Sin asignar"]
   }
 }
+
 
 
 
