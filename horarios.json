@@ -16,7 +16,7 @@
   },
   "Lunes": {
     "mañana": ["Tere"],
-    "tarde": ["Sin asignar"],
+    "tarde": ["José y Belén"],
     "noche": ["Sin asignar"]
   }, 
   "Martes": {
@@ -35,6 +35,7 @@
     "noche": ["Sin asignar"]
   }
 }
+
 
 
 
