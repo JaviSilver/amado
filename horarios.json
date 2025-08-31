@@ -27,7 +27,7 @@
   "Jueves": {
     "mañana": ["Sin asignar"],
     "tarde": ["Sin asignar"],
-    "noche": ["Sin asignar"]
+    "noche": ["Pablo"]
   },
   "Viernes": {
     "mañana": ["Sin asignar"],
@@ -35,6 +35,7 @@
     "noche": ["Sin asignar"]
   }
 }
+
 
 
 
