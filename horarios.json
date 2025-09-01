@@ -15,7 +15,7 @@
     "noche": ["Lucia (Cuidadora)"]
   },
   "Jueves": {
-    "mañana": ["Sin asignar"],
+    "mañana": ["Margarita (Chica)"],
     "tarde": ["Conchi"],
     "noche": ["Pablo"]
   },
@@ -35,6 +35,7 @@
     "noche": ["Sin asignar"]
   }
 }
+
 
 
 
