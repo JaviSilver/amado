@@ -2,7 +2,7 @@
   "Martes": {
     "mañana": ["Tere"],
     "tarde": ["Conchi"],
-    "noche": ["Javier"]
+    "noche": ["Lucia (Cuidadora)"]
   },
   "Miércoles": {
     "mañana": ["Jesús Rubia"],
@@ -36,6 +36,7 @@
     "noche": ["Sin asignar"]
   }
 }
+
 
 
 
