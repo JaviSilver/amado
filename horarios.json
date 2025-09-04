@@ -1,16 +1,11 @@
 { 
-  "Miércoles": {
-    "mañana": ["Jesús Rubia"],
-    "tarde": ["Jesús Rubia y Lolo/Cris"],
-    "noche": ["Lucia (Cuidadora)"]
-  },
   "Jueves": {
     "mañana": ["Margarita (Chica)"],
     "tarde": ["Conchi"],
     "noche": ["Lucia (Cuidadora)"]
   },
   "Viernes": {
-    "mañana": ["Sin asignar"],
+    "mañana": ["Angel"],
     "tarde": ["Sin asignar"],
     "noche": ["Sin asignar"]
   },
@@ -34,8 +29,14 @@
     "mañana": ["Sin asignar"],
     "tarde": ["Sin asignar"],
     "noche": ["Sin asignar"]
+  },
+  "Miércoles": {
+    "mañana": ["Sin asignar"],
+    "tarde": ["Sin asignar"],
+    "noche": ["Sin asignar"]
   }
 }
+
 
 
 
