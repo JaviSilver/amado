@@ -6,18 +6,18 @@
   },
   "Viernes": {
     "mañana": ["Angel"],
-    "tarde": ["Sin asignar"],
-    "noche": ["Sin asignar"]
+    "tarde": ["Tere"],
+    "noche": ["Lucia (Cuidadora)"]
   },
    "Sábado": {
     "mañana": ["Sin asignar"],
-    "tarde": ["Sin asignar"],
-    "noche": ["Sin asignar"]
+    "tarde": ["Jesus Moro"],
+    "noche": ["Lucia (Cuidadora)"]
   },
   "Domingo": {
-    "mañana": ["Sin asignar"],
+    "mañana": ["Conchi"],
     "tarde": ["Sin asignar"],
-    "noche": ["Sin asignar"]
+    "noche": ["Lucia (Cuidadora)"]
   },
   
   "Lunes": {
@@ -36,6 +36,7 @@
     "noche": ["Sin asignar"]
   }
 }
+
 
 
 
