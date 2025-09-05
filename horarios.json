@@ -7,7 +7,7 @@
    "Sábado": {
     "mañana": ["Jesús Rubia"],
     "tarde": ["Jesús Moro"],
-    "noche": ["Lucia (Cuidadora)"]
+    "noche": ["Sandra"]
   },
   "Domingo": {
     "mañana": ["Conchi"],
@@ -36,6 +36,7 @@
     "noche": ["Sin asignar"]
     }
 }
+
 
 
 
