@@ -11,12 +11,12 @@
   },
   "Domingo": {
     "mañana": ["Conchi"],
-    "tarde": ["Sin asignar"],
+    "tarde": ["Margarita (Chica)"],
     "noche": ["Lucia (Cuidadora)"]
   },
   
   "Lunes": {
-    "mañana": ["Sin asignar"],
+    "mañana": ["Tere"],
     "tarde": ["Sin asignar"],
     "noche": ["Sin asignar"]
   },
@@ -36,6 +36,7 @@
     "noche": ["Sin asignar"]
     }
 }
+
 
 
 
