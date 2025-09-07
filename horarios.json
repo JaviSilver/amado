@@ -12,8 +12,8 @@
   },
   "Martes": {
     "mañana": ["Angel"],
-    "tarde": ["Sin asignar"],
-    "noche": ["Sin asignar"]
+    "tarde": ["Jesús Rubia"],
+    "noche": ["Lucia (Cuidadora)"]
   },
   "Miércoles": {
     "mañana": ["Sin asignar"],
@@ -36,6 +36,7 @@
     "noche": ["Sin asignar"]
   }
 }
+
 
 
 
