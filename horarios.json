@@ -7,11 +7,11 @@
   
   "Lunes": {
     "mañana": ["Tere"],
-    "tarde": ["Sin asignar"],
-    "noche": ["Sin asignar"]
+    "tarde": ["Conchi"],
+    "noche": ["Lucia (  Cuidadora)"]
   },
   "Martes": {
-    "mañana": ["Sin asignar"],
+    "mañana": ["Angel"],
     "tarde": ["Sin asignar"],
     "noche": ["Sin asignar"]
   },
@@ -36,6 +36,7 @@
     "noche": ["Sin asignar"]
   }
 }
+
 
 
 
