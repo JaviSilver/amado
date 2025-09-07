@@ -1,14 +1,4 @@
 { 
-  "Viernes": {
-    "mañana": ["Angel"],
-    "tarde": ["Tere"],
-    "noche": ["Lucia (Cuidadora)"]
-  },
-   "Sábado": {
-    "mañana": ["Jesús Rubia"],
-    "tarde": ["Jesús Moro"],
-    "noche": ["Sandra"]
-  },
   "Domingo": {
     "mañana": ["Conchi"],
     "tarde": ["Margarita (Chica)"],
@@ -34,8 +24,19 @@
     "mañana": ["Sin asignar"],
     "tarde": ["Sin asignar"],
     "noche": ["Sin asignar"]
-    }
+    },
+  "Viernes": {
+    "mañana": ["Sin asignar"],
+    "tarde": ["Sin asignar"],
+    "noche": ["Sin asignar"]
+  },
+   "Sábado": {
+    "mañana": ["Sin asignar"],
+    "tarde": ["Sin asignar"],
+    "noche": ["Sin asignar"]
+  }
 }
+
 
 
 
